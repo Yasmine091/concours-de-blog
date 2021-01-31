@@ -11,36 +11,57 @@
       <div class="container">
         <% for(let i=0; i < news.length; i++){ %>
 
-          <div class="card">
-            <img src="<%= news[i].img %>" class="card-img-top" alt="Image de l'article <%= news[i].title %>
+          <div class="card shadow mb-5">
+            <img src="<%= news[i].img %>" class="card-img-top w-100 h-100 nw-img" alt="Image de l'article <%= news[i].title %>
             ">
+            <div class="card-header">
+              <div class="row">
+                <div class="col-md-8 col-sm-12 col-lg-9">
+                  <h5 class="card-title">
+                    <%= news[i].title %>
+                  </h5>
+                </div>
+                <div class="col-md-4 col-sm-12 col-lg-3 text-right">
+                  <span class="badge badge-info d-block px-2 m-1">
+                    Auteur : <%= news[i].author_firstname + " " + news[i].author_lastname %>
+                  </span>
+                  <span class="badge badge-info d-block px-2 m-1"> Publiée le :
+                    <%= new Date(news[i].published_at).getDate() + "/" + new Date(news[i].published_at).getMonth() + "/"
+                      + new Date(news[i].published_at).getFullYear(); %>
+                  </span>
+                </div>
+              </div>
+            </div>
             <div class="card-body">
-              <h5 class="card-title">
-                <%= news[i].title %>
-              </h5>
-              <p class="card-text">
+              <p class="card-text nw-content">
                 <%= news[i].content %>
               </p>
             </div>
             <div class="card-footer">
-              <small class="text-muted">
-                <p class="d-block py-2">
-                  <span class="badge badge-info float-left">
-                    Auteur : <%= news[i].author_firstname + " " + news[i].author_lastname %>
-                  </span>
-                  <span class="badge badge-info float-right"> Publiée le :
-                    <%= new Date(news[i].published_at).getDate() + "/" + new Date(news[i].published_at).getMonth() + "/"
-                      + new Date(news[i].published_at).getFullYear(); %>
-                  </span>
-                </p>
-                <a href="/news/<%= news[i].id %>" class="btn btn-dark btn-sm d-block" type="button" type="submit">Lire
-                  la suite</a>
-              </small>
+              <div class="text-muted">
+                <div class="row">
+                  <div class="col">
+                    <a href="/delete/<%= news[i].id %>" class="btn btn-danger btn-sm d-block m-1"
+                      type="button">Supprimer l'article</a>
+                  </div>
+                  <div class="col-md-1 col-sm-0"></div>
+                  <div class="col col-md-4">
+                    <a href="/comment/<%= news[i].id %>" class="btn btn-warning btn-sm d-block m-1"
+                      type="button">Ajouter un commentaire</a>
+                  </div>
+                  <div class="col-md-1 col-sm-0"></div>
+                  <div class="col">
+                    <a href="/update/<%= news[i].id %>" class="btn btn-info btn-sm d-block m-1" type="button">Modifier
+                      l'article</a>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-
-          <% } %>
       </div>
+
+      <% } %>
+        </div>
 
     </main>
     <%- include('../parts/footer');%>

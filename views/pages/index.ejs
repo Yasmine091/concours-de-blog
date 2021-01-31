@@ -12,7 +12,7 @@
         <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3">
           <% for(let i=0; i < news.length; i++){ %>
             <div class="col mb-4">
-              <div class="card">
+              <div class="card shadow">
                 <img src="<%= news[i].img %>" class="card-img-top" alt="Image de l'article <%= news[i].title %>
 ">
                 <div class="card-body">
@@ -20,7 +20,7 @@
                     <%= news[i].title %>
                   </h5>
                   <p class="card-text">
-                    <%= news[i].content %>
+                    <%= news[i].content.substring(0,100); %>
                   </p>
                 </div>
                 <div class="card-footer">

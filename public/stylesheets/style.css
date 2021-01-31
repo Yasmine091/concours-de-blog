@@ -1,0 +1,8 @@
+.nw-img {
+    object-fit: cover;
+    max-height: 20rem !important;
+}
+
+.nw-content {
+    white-space: pre-line;
+}

@@ -6,12 +6,6 @@ var logger = require('morgan');
 
 var app = express();
 
-const port = process.env.PORT || 8080;
-
-app.listen(port, () => {
-  console.log(`Epicerie app listening at http://localhost:${port}`)
-});
-
 const sqlite3 = require('sqlite3').verbose();
 
 // open database in memory
@@ -33,7 +27,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', (req, res) => {
+app.get('/', (req, res) => {
 
   const query = `SELECT * FROM news`;
   db.all(query, [], (err, rows) => {
@@ -48,6 +42,7 @@ app.use('/', (req, res) => {
 
 });
 
+// GET selected news from id
 app.get('/news/:id', (req, res) => {
 
   if (isNaN(req.params.id))
@@ -64,6 +59,29 @@ app.get('/news/:id', (req, res) => {
 
       res.render('./pages/news', {
         news: rows
+    });
+  });
+
+});
+
+
+// GET news comments from id
+app.get('/news/:id', (req, res) => {
+
+  if (isNaN(req.params.id))
+    {
+        return;
+    }
+
+  const query = `SELECT * FROM comments WHERE artid = ${req.params.id}`;
+  db.all(query, [], (err, rows) => {
+      if (err)
+      {
+          console.error(err.message);
+      }
+
+      res.render('./pages/news', {
+        comments: rows
     });
   });
 
