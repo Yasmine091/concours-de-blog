@@ -8,8 +8,12 @@
     </header>
     <main>
 
+    <% let article = 0; %>
+
       <div class="container">
-        <% for(let i=0; i < news.length; i++){ %>
+        <% for(let i=0; i < news.length; i++){ 
+          if(article == i) {
+          %>
 
           <div class="card shadow mb-5">
             <img src="<%= news[i].img %>" class="card-img-top w-100 h-100 nw-img" alt="Image de l'article <%= news[i].title %>
@@ -25,8 +29,8 @@
                   <span class="badge badge-info d-block px-2 m-1">
                     Auteur : <%= news[i].author_firstname + " " + news[i].author_lastname %>
                   </span>
-                  <span class="badge badge-info d-block px-2 m-1"> Publiée le :
-                    <%= new Date(news[i].published_at).getDate() + "/" + new Date(news[i].published_at).getMonth() + "/"
+                  <span class="badge badge-info d-block px-2 m-1"> Publié le :
+                    <%= new Date(news[i].published_at).getDate() + "/" + new Date(news[i].published_at).getMonth()+1 + "/"
                       + new Date(news[i].published_at).getFullYear(); %>
                   </span>
                 </div>
@@ -34,7 +38,7 @@
             </div>
             <div class="card-body">
               <p class="card-text nw-content">
-                <%= news[i].content %>
+                <%= news[i].nw_content %>
               </p>
             </div>
             <div class="card-footer">
@@ -46,12 +50,12 @@
                   </div>
                   <div class="col-md-1 col-sm-0"></div>
                   <div class="col col-md-4">
-                    <a href="/comment/<%= news[i].id %>" class="btn btn-warning btn-sm d-block m-1"
-                      type="button">Ajouter un commentaire</a>
+                    <button data-toggle="modal" data-target="#newComment" class="btn btn-warning btn-sm d-block m-1"
+                      type="button">Ajouter un commentaire</button>
                   </div>
                   <div class="col-md-1 col-sm-0"></div>
                   <div class="col">
-                    <a href="/update/<%= news[i].id %>" class="btn btn-info btn-sm d-block m-1" type="button">Modifier
+                    <a href="/edit/<%= news[i].id %>" class="btn btn-info btn-sm d-block m-1" type="button">Modifier
                       l'article</a>
                   </div>
                 </div>
@@ -60,7 +64,52 @@
           </div>
       </div>
 
-      <% } %>
+      <% } } %>
+        </div>
+
+      <div class="container">
+        <h5 class="my-4">Commentaires :</h5>
+        <hr class="my-4">
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3">
+          <% for(let i=0; i < comments.length; i++){ %>
+            <div class="col mb-4">
+            <div class="card border-secondary mb-3" style="max-width: 20rem;">
+              <div class="card-header"><%= comments[i].author %> a écrit :</div>
+              <div class="card-body text-secondary">
+                <p class="card-text">
+                  ~ <%= comments[i].com_content %>
+              </p>
+              </div>
+              <div class="card-footer">
+                <div class="text-muted">
+                  Publié le : <%= new Date(comments[i].com_date).getDate() + "/" + new Date(comments[i].com_date).getMonth()+1 + "/"
+                  + new Date(comments[i].com_date).getFullYear(); %>
+                </div>
+              </div>       
+            </div>
+            </div>
+            <% } %>
+          </div>
+
+      </div>
+
+      <div class="modal" id="newComment" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              ...
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
         </div>
 
     </main>

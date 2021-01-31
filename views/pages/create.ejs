@@ -1,13 +1,63 @@
 <!DOCTYPE html>
 <html>
-  <%- include('../parts/head');%>
+<%- include('../parts/head');%>
+
   <body>
     <header>
       <%- include('../parts/navigation');%>
     </header>
     <main>
-      
+
+      <div class="container">
+
+        <div class="card mb-5 shadow">
+          <div class="card-header text-center">
+            <h5 class="mb-0">Ajouter un article</h5>
+          </div>
+          <div class="card-body">
+            <form action="/add" method="POST">
+              <div class="row mb-3">
+                <label for="inputNom" class="col-sm-6 col-form-label">Nom</label>
+                <label for="inputPrenom" class="col-sm-6 col-form-label">Prénom</label>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="inputNom" name="inputNom">
+                </div>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="inputPrenom" name="inputPrenom">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputTitle" class="col-sm-12 col-form-label">Titre de l'article</label>
+                <div class="col-sm-12">
+                  <input type="text" class="form-control" id="inputTitle" name="inputTitle">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputImg" class="col-sm-12 col-form-label">Image de l'article</label>
+                <div class="col-sm-12">
+                  <input type="text" class="form-control" id="inputImg" name="inputImg"
+                    placeholder="Ex: https://exemple.com/chaton.png">
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label for="inputContent" class="col-sm-12 col-form-label">Contenu de l'article</label>
+                <div class="col-sm-12">
+                  <textarea class="form-control" id="inputContent" rows="10" name="inputContent" value=""></textarea>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-sm-12">
+                  <button type="submit" class="btn btn-info d-block w-100">Ajouter l'article</button>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
     </main>
     <%- include('../parts/footer');%>
   </body>
+
 </html>

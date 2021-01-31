@@ -42,8 +42,13 @@ app.get('/', (req, res) => {
 
 });
 
-// GET selected news from id
-app.get('/news/:id', (req, res) => {
+// GET article creation page
+app.get('/create', (req, res) => {
+  res.render('pages/create');
+});
+
+// GET articlr edit page
+app.get('/edit/:id', (req, res) => {
 
   if (isNaN(req.params.id))
     {
@@ -57,15 +62,14 @@ app.get('/news/:id', (req, res) => {
           console.error(err.message);
       }
 
-      res.render('./pages/news', {
+      res.render('./pages/edit', {
         news: rows
     });
   });
 
 });
 
-
-// GET news comments from id
+// GET selected news from id
 app.get('/news/:id', (req, res) => {
 
   if (isNaN(req.params.id))
@@ -73,7 +77,15 @@ app.get('/news/:id', (req, res) => {
         return;
     }
 
-  const query = `SELECT * FROM comments WHERE artid = ${req.params.id}`;
+  const query = `SELECT *, news.content as nw_content, 
+                          news.published_at as published_at,
+                          news.id as id,
+                          comments.id as com_id, 
+                          comments.content as com_content,
+                          comments.published_at as com_date
+                          FROM news, comments 
+                          WHERE news.id = ${req.params.id} 
+                          AND comments.artid = ${req.params.id}`;
   db.all(query, [], (err, rows) => {
       if (err)
       {
@@ -81,11 +93,102 @@ app.get('/news/:id', (req, res) => {
       }
 
       res.render('./pages/news', {
+        news: rows,
         comments: rows
     });
   });
 
 });
+
+/**
+ * POST new article
+ */
+app.post('/add', (req, res) => {
+  const query = `INSERT INTO news (title, img, content, author_firstname, author_lastname, published_at)
+      VALUES ('${req.body.inputTitle}', 
+          '${req.body.inputImg}',
+          '${req.body.inputContent}',
+          '${req.body.inputPrenom}',
+          '${req.body.inputNom}',
+          '${new Date()}'
+      )`;
+
+  db.run(query, (err) => {
+      if (err)
+      {
+          return console.error('ici: ', err.message);
+      }
+      console.log('News successfully created.');
+
+  });
+});
+
+/**
+ * Edit article
+ */
+app.post('/update/:id', (req, res) => {
+  const query = `
+          UPDATE news SET
+          title = '${req.body.inputTitle}', 
+          img = '${req.body.inputImg}',
+          content = '${req.body.inputContent}',
+          author_firstname = '${req.body.inputPrenom}',
+          author_lastname = '${req.body.inputNom}'
+          WHERE id = '${req.params.id}'
+        `;
+
+  db.run(query, (err) => {
+      if (err)
+      {
+          return console.error('ici: ', err.message);
+      }
+      console.log('News successfully updated.');
+
+  });
+});
+
+/**
+ * delete news
+ */
+app.get('/delete/:id', (req, res) => {
+  if (isNaN(req.params.id))
+  {
+      return;
+  }
+
+  const query = `DELETE FROM news WHERE id = ${req.params.id};`;
+
+  db.run(query, (err) => {
+      if (err)
+      {
+          return console.error(err.message);
+      }
+      console.log('News successfully deleted.');
+
+      delNewsComments(req.params.id);
+  });
+});
+
+/**
+ * delete news
+ */
+function delNewsComments(id) {
+  if (isNaN(id))
+  {
+      return;
+  }
+
+  const query = `DELETE FROM comments WHERE artid = ${id};`;
+
+  db.run(query, (err) => {
+      if (err)
+      {
+          return console.error(err.message);
+      }
+      console.log('News comments successfully deleted.');
+
+  });
+}
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

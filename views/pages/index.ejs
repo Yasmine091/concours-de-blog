@@ -25,27 +25,32 @@
                 </div>
                 <div class="card-footer">
                   <small class="text-muted">
-                    <p class="d-block py-2">
-                      <span class="badge badge-info float-left">
+                  <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-7 text-left">
+                      <span class="badge badge-info my-2 d-block">
                         Auteur : <%= news[i].author_firstname + " " + news[i].author_lastname %>
                       </span>
-                      <span class="badge badge-info float-right"> Publiée le :
-                        <%= new Date(news[i].published_at).getDate() + "/" + new Date(news[i].published_at).getMonth()
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-5 text-right">
+                      <span class="badge badge-info my-2 d-block"> Publiée le :
+                        <%= new Date(news[i].published_at).getDate() + "/" + new Date(news[i].published_at).getMonth()+1
                           + "/" + new Date(news[i].published_at).getFullYear(); %>
                       </span>
-                    </p>
-                    <a href="/news/<%= news[i].id %>" class="btn btn-dark btn-sm d-block" type="button"
-                      type="submit">Lire la suite</a>
-                  </small>
+                    </div>
+                    <div class="col-sm-12 col-md-12 col-lg-12">
+                    <a href="/news/<%= news[i].id %>" class="btn btn-dark btn-sm d-block" type="button" type="submit">Lire
+                      la suite</a>
+                  </div>
+                  </div>
+                </small>
                 </div>
               </div>
             </div>
+
+
+            <% } %>
         </div>
       </div>
-
-      <% } %>
-
-        </div>
 
     </main>
     <%- include('../parts/footer');%>
