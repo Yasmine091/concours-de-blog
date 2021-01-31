@@ -6,6 +6,12 @@ var logger = require('morgan');
 
 var app = express();
 
+const port = process.env.PORT || 8080;
+
+app.listen(port, () => {
+  console.log(`Epicerie app listening at http://localhost:${port}`)
+});
+
 const sqlite3 = require('sqlite3').verbose();
 
 // open database in memory
@@ -44,12 +50,18 @@ app.use('/', (req, res) => {
 
 app.get('/news/:id', (req, res) => {
 
-  const query = `SELECT * FROM news WHERE id = '${req.params.id}'`;
+  if (isNaN(req.params.id))
+    {
+        return;
+    }
+
+  const query = `SELECT * FROM news WHERE id = ${req.params.id}`;
   db.all(query, [], (err, rows) => {
       if (err)
       {
           console.error(err.message);
       }
+
       res.render('./pages/news', {
         news: rows
     });
