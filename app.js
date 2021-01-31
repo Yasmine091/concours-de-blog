@@ -148,7 +148,7 @@ app.post('/update/:id', (req, res) => {
 });
 
 /**
- * delete news
+ * delete news comments
  */
 app.get('/delete/:id', (req, res) => {
   if (isNaN(req.params.id))
@@ -189,6 +189,28 @@ function delNewsComments(id) {
 
   });
 }
+
+/**
+ * POST new comment
+ */
+app.post('/comment', (req, res) => {
+  const query = `INSERT INTO comments (artid, author, content, published_at)
+      VALUES (
+          '${req.body.inputID}',
+          '${req.body.inputPrenom}',
+          '${req.body.inputContent}',
+          '${new Date()}'
+      )`;
+
+  db.run(query, (err) => {
+      if (err)
+      {
+          return console.error('ici: ', err.message);
+      }
+      console.log('Comment successfully created.');
+
+  });
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
