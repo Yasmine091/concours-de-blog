@@ -4,9 +4,6 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
 var app = express();
 
 const sqlite3 = require('sqlite3').verbose();
@@ -30,19 +27,31 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/', (req, res) => {
 
-app.use('/parts/navigation', (req, res) => {
-
-  const query = `SELECT * FROM settings`;
+  const query = `SELECT * FROM news`;
   db.all(query, [], (err, rows) => {
       if (err)
       {
           console.error(err.message);
       }
-      res.render('/parts/navigation', {
-        site: rows
+      res.render('./pages/index', {
+        news: rows
+    });
+  });
+
+});
+
+app.get('/news/:id', (req, res) => {
+
+  const query = `SELECT * FROM news WHERE id = '${req.params.id}'`;
+  db.all(query, [], (err, rows) => {
+      if (err)
+      {
+          console.error(err.message);
+      }
+      res.render('./pages/news', {
+        news: rows
     });
   });
 
